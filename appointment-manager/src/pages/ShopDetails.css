@@ -1,0 +1,31 @@
+.shop-details {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  min-height: calc(100vh - 64px);
+}
+
+.shop-info {
+  margin-bottom: 2rem;  
+}
+
+.shop-info h1 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.queue-section {
+  flex: 3; /* 75% */
+}
+
+.menu-section {
+  flex: 1; /* 25% */
+}
+
+@media (max-width: 768px) {
+  .shop-details {
+    flex-direction: column;
+    padding: 1rem;
+  }
+} 

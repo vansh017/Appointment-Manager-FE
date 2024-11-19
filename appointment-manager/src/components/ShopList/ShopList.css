@@ -162,4 +162,15 @@ td:not(:last-child) {
   .items-select {
     margin-left: 0;
   }
+}
+
+.shop-row {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shop-row:hover {
+  background-color: #e6f2ff;
+  transform: translateX(6px);
+  box-shadow: -6px 0 8px -8px rgba(0, 0, 0, 0.2);
 } 

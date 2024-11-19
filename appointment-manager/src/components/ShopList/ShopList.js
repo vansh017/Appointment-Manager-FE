@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ShopList.css";
 
 const ShopList = () => {
+  const navigate = useNavigate();
   // Sample data with 15 shops
   const shops = [
     {
@@ -116,6 +118,10 @@ const ShopList = () => {
     setCurrentPage(1); // Reset to first page when changing items per page
   };
 
+  const handleShopClick = (shopId) => {
+    navigate(`/shop/${shopId}`);
+  };
+
   return (
     <div className="shop-list">
       <table>
@@ -129,7 +135,11 @@ const ShopList = () => {
         </thead>
         <tbody>
           {currentItems.map((shop, index) => (
-            <tr key={shop.id}>
+            <tr
+              key={shop.id}
+              onClick={() => handleShopClick(shop.id)}
+              className="shop-row"
+            >
               <td>{indexOfFirstItem + index + 1}</td>
               <td>{shop.name}</td>
               <td>{shop.owner}</td>

@@ -1,0 +1,51 @@
+.shop-menu {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.shop-menu h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-item {
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.menu-item h3 {
+  color: #007bff;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.item-details {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.duration {
+  color: #666;
+}
+
+.price {
+  font-weight: 600;
+  color: #28a745;
+} 
