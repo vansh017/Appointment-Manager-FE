@@ -6,6 +6,7 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { Message } from "primereact/message";
 import "./Login.css";
+import { loginUser } from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,24 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // ... existing login logic ...
+    setError("");
+
+    try {
+      const userData = { email, password };
+      console.log(userData);
+
+      const data = await loginUser(userData);
+
+      // Store token if your API returns one
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      // Redirect to dashboard or home page
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "An error occurred during login");
+    }
   };
 
   return (

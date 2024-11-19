@@ -12,12 +12,22 @@ const axiosInstance = axios.create({
 
 export const signUpUser = async (userData) => {
   try {
-    console.log("Sending signup request:", userData);
-
     const response = await axiosInstance.post("/auth/signup", userData);
     return response;
   } catch (error) {
     console.error("Signup error details:", error.response || error);
+    throw error;
+  }
+};
+
+export const loginUser = async (userData) => {
+  try {
+    const credentials = `${userData.email}:${userData.password}`;
+    const encodedCredentials = btoa(credentials);
+    const data = { user: encodedCredentials };
+    const response = await axiosInstance.post("/auth/login", data);
+    return response;
+  } catch (error) {
     throw error;
   }
 };
