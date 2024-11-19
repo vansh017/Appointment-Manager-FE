@@ -31,3 +31,13 @@ export const loginUser = async (userData) => {
     throw error;
   }
 };
+
+export const verifyOtp = async (userData) => {
+  try {
+    const response = await axiosInstance.post("/auth/otp", userData);
+    return response;
+  } catch (error) {
+    console.error("Signup error details:", error.response || error);
+    throw error;
+  }
+};

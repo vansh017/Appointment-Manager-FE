@@ -24,13 +24,17 @@ const Login = () => {
 
       const data = await loginUser(userData);
 
+      if (data.status === 200) {
+        navigate("/verify-otp");
+        localStorage.setItem("email", email);
+      }
+
       // Store token if your API returns one
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
 
       // Redirect to dashboard or home page
-      navigate("/");
     } catch (err) {
       setError(err.message || "An error occurred during login");
     }
