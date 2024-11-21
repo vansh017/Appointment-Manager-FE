@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
-import { verifyOtp } from "../services/api";
+import { verifyOtp, getUserData } from "../services/api";
 import "./OtpVerification.css";
 
 const OtpVerification = () => {
@@ -17,9 +17,16 @@ const OtpVerification = () => {
     try {
       const username = localStorage.getItem("email");
       const response = await verifyOtp({ otp: otp, username: username });
-      if (response.status === 200) {
-        if (response.data.data.access_token) {
-          localStorage.setItem("token", response.data.data.access_token);
+      if (response.status === "success") {
+        if (response.data) {
+          localStorage.setItem("token", response.data.access_token);
+          const userDataResponse = await getUserData(response.data.user_id);
+          if (userDataResponse.status === "success") {
+            localStorage.setItem(
+              "userData",
+              JSON.stringify(userDataResponse.data)
+            );
+          }
         }
         navigate("/");
       }
