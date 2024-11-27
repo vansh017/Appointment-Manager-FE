@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Clock, Calendar, Scissors } from 'lucide-react';
+import './ShopDetails.css';
 
 const MOCK_SERVICES = [
   { id: 1, name: "Haircut", price: 30, duration: "30 min" },
@@ -20,40 +21,40 @@ const ShopDetails = () => {
   const [selectedService, setSelectedService] = useState<number | null>(null);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="shop-container">
+      <div className="shop-grid">
         <div>
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Elite Cuts</h2>
-            <div className="flex items-center text-gray-600 mb-4">
-              <Clock className="h-5 w-5 mr-2" />
+          <div className="shop-card shop-card-mb">
+            <h2 className="shop-title">Elite Cuts</h2>
+            <div className="shop-info-row">
+              <Clock className="shop-info-icon" />
               <span>Current Queue: {MOCK_QUEUE.length} people</span>
             </div>
-            <div className="flex items-center text-gray-600">
-              <Calendar className="h-5 w-5 mr-2" />
+            <div className="shop-info-row">
+              <Calendar className="shop-info-icon" />
               <span>Est. Wait Time: 45 minutes</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Services</h3>
-            <div className="space-y-4">
+          <div className="shop-card">
+            <h3 className="shop-title">Services</h3>
+            <div className="services-list">
               {MOCK_SERVICES.map((service) => (
                 <div
                   key={service.id}
-                  className={`p-4 rounded-lg border cursor-pointer transition-colors ${
+                  className={`service-item ${
                     selectedService === service.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
+                      ? 'service-item-selected'
+                      : 'service-item-default'
                   }`}
                   onClick={() => setSelectedService(service.id)}
                 >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-medium text-gray-900">{service.name}</h4>
-                      <p className="text-sm text-gray-600">{service.duration}</p>
+                  <div className="service-content">
+                    <div className="service-info">
+                      <h4 className="service-info h4">{service.name}</h4>
+                      <p className="service-info p">{service.duration}</p>
                     </div>
-                    <div className="text-lg font-semibold text-gray-900">
+                    <div className="service-price">
                       ${service.price}
                     </div>
                   </div>

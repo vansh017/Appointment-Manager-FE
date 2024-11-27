@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Clock } from 'lucide-react';
+import './CustomerView.css';
 
 const MOCK_SHOPS = [
   {
@@ -34,49 +35,45 @@ const CustomerView = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search for salons..."
-            className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+    <div className="customer-view-container">
+      <div className="search-container">
+        <Search className="search-icon" />
+        <input
+          type="text"
+          placeholder="Search for salons..."
+          className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
-      <div className="grid gap-6">
+      <div className="shops-grid">
         {MOCK_SHOPS.map((shop) => (
           <div
             key={shop.id}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+            className="shop-card"
             onClick={() => navigate(`/shop/${shop.id}`)}
           >
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
+            <div className="shop-card-content">
+              <div className="shop-header">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">{shop.name}</h2>
-                  <div className="flex items-center text-gray-600 mt-1">
-                    <MapPin className="h-4 w-4 mr-1" />
+                  <h2 className="shop-name">{shop.name}</h2>
+                  <div className="shop-address">
+                    <MapPin className="icon" />
                     <span>{shop.address}</span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm font-medium text-blue-600">
-                    ⭐️ {shop.rating}
-                  </div>
+                <div className="shop-rating">
+                  ⭐️ {shop.rating}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <div className="flex items-center text-gray-600">
-                  <Clock className="h-4 w-4 mr-1" />
+              <div className="shop-footer">
+                <div className="queue-info">
+                  <Clock className="icon" />
                   <span>Queue: {shop.queueLength} people</span>
                 </div>
-                <div className="text-sm font-medium text-gray-900">
+                <div className="wait-time">
                   Est. wait: {shop.estimatedWait}
                 </div>
               </div>

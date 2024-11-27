@@ -1,34 +1,35 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Store } from 'lucide-react';
+import './UserSelection.css';
 
 const UserSelection = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-center text-gray-900 mb-12">
+    <div className="user-selection-container">
+      <h1 className="user-selection-title">
         Welcome to StyleQueue
       </h1>
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="selection-grid">
         <button
           onClick={() => navigate('/customer')}
-          className="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+          className="selection-button"
         >
-          <Users className="h-16 w-16 text-blue-600 mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">I'm a Customer</h2>
-          <p className="text-gray-600 text-center">
+          <Users className="selection-icon" />
+          <h2 className="selection-heading">I'm a Customer</h2>
+          <p className="selection-description">
             Book appointments and view waiting times at nearby salons
           </p>
         </button>
 
         <button
           onClick={() => navigate('/shop-owner')}
-          className="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+          className="selection-button"
         >
-          <Store className="h-16 w-16 text-blue-600 mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">I'm a Shop Owner</h2>
-          <p className="text-gray-600 text-center">
+          <Store className="selection-icon" />
+          <h2 className="selection-heading">I'm a Shop Owner</h2>
+          <p className="selection-description">
             Manage your salon's queue and appointments
           </p>
         </button>
