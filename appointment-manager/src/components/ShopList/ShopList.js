@@ -124,30 +124,32 @@ const ShopList = () => {
 
   return (
     <div className="shop-list">
-      <table>
-        <thead>
-          <tr>
-            <th>Sr. No.</th>
-            <th>Shop Name</th>
-            <th>Owner</th>
-            <th>Address</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((shop, index) => (
-            <tr
-              key={shop.id}
-              onClick={() => handleShopClick(shop.id)}
-              className="shop-row"
-            >
-              <td>{indexOfFirstItem + index + 1}</td>
-              <td>{shop.name}</td>
-              <td>{shop.owner}</td>
-              <td>{shop.address}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="cards-container">
+        {currentItems.map((shop, index) => (
+          <div
+            key={shop.id}
+            className="shop-card"
+            onClick={() => handleShopClick(shop.id)}
+          >
+            <div className="card-header">
+              <span className="shop-number">
+                {indexOfFirstItem + index + 1}
+              </span>
+              <h3 className="shop-name">{shop.name}</h3>
+            </div>
+            <div className="card-content">
+              <div className="info-row">
+                <span className="label">Owner:</span>
+                <span className="value">{shop.owner}</span>
+              </div>
+              <div className="info-row">
+                <span className="label">Address:</span>
+                <span className="value">{shop.address}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <div className="pagination">
         <button

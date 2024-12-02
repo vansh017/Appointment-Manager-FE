@@ -6,7 +6,7 @@ import "./Home.css";
 
 const Home = () => {
   return (
-    <div className="home">
+    <div className="home dark-bg">
       <Header />
       <SearchBar />
       <ShopList />

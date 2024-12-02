@@ -1,5 +1,5 @@
 .main-header {
-  background-color: #f8f9fa;
+  background-color: #091f2c;
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -13,7 +13,7 @@
 }
 
 .app-title h1 {
-  color: #333;
+  color: #93e8d3;
   margin: 0;
   font-size: 1.5rem;
 }
@@ -28,7 +28,7 @@
   cursor: pointer;
   padding: 0.5rem;
   font-size: 1.2rem;
-  color: #007bff;
+  color: #93e8d3;
   width: 40px;
   height: 40px;
   border-radius: 50%;
