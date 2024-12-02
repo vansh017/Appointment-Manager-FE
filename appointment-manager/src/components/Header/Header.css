@@ -100,4 +100,8 @@
     padding: 1rem;
   }
 }
+
+.app-title {
+  cursor: pointer;
+}
  

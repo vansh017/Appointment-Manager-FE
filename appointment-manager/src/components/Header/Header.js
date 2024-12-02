@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "primereact/menu";
 import "./Header.css";
 
@@ -7,6 +7,9 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const hideUserIcon = ["/login", "/signup"].includes(location.pathname);
 
   const menuItems = [
     {
@@ -28,23 +31,25 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="header-content">
-        <div className="app-title">
+        <div className="app-title" onClick={() => navigate("/")}>
           <h1>My Application</h1>
         </div>
-        <div className="user-menu">
-          <button
-            className="user-icon-button"
-            onClick={(e) => menuRef.current.toggle(e)}
-          >
-            <i className="pi pi-user"></i>
-          </button>
-          <Menu
-            model={menuItems}
-            popup
-            ref={menuRef}
-            className="dropdown-menu"
-          />
-        </div>
+        {!hideUserIcon && (
+          <div className="user-menu">
+            <button
+              className="user-icon-button"
+              onClick={(e) => menuRef.current.toggle(e)}
+            >
+              <i className="pi pi-user"></i>
+            </button>
+            <Menu
+              model={menuItems}
+              popup
+              ref={menuRef}
+              className="dropdown-menu"
+            />
+          </div>
+        )}
       </div>
     </header>
   );

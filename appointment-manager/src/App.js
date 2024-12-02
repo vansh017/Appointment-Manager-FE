@@ -8,13 +8,15 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import OtpVerification from "./pages/OtpVerification";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <Header className="header" />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home className="shop-list" />} />
           <Route path="/shop/:shopId" element={<ShopDetails />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
