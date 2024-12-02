@@ -1,0 +1,77 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #091f2c;
+  }
+  
+  .auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: #333333;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-card h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .p-field {
+    margin-bottom: 1.5rem;
+  }
+  
+  .p-inputtext,
+  .p-password input {
+    width: 100%;
+    background: #424242;
+    border: 1px solid #555555;
+    color: #ffffff;
+  }
+  
+  .p-float-label label {
+    color: #cccccc;
+  }
+  
+  .p-button-primary {
+    width: 100%;
+    background: #2196f3;
+    border: none;
+    margin-top: 1rem;
+  }
+  
+  .p-button-primary:hover {
+    background: #1976d2;
+  }
+  
+  /* Style for error message */
+  .p-message {
+    margin-bottom: 1rem;
+  } 
+
+
+
+.signup-form {
+    display: flex;
+  
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Make all inputs the same width */
+  .form-group .p-inputtext,
+  .form-group .p-dropdown,
+  .form-group .p-password {
+    width: 100%;
+  }
