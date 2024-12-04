@@ -1,5 +1,6 @@
 import React from "react";
 import "./ShopMenu.css";
+import Button from "../Button/Button";
 
 const ShopMenu = () => {
   const menuItems = [
@@ -9,6 +10,23 @@ const ShopMenu = () => {
     { id: 4, item: "Styling", duration: "45 min", price: "$35" },
     { id: 5, item: "Facial", duration: "40 min", price: "$30" },
   ];
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [customersPerPage, setCustomersPerPage] = React.useState(5);
+
+  const indexOfLastCustomer = currentPage * customersPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
+  const currentCustomers = menuItems.slice(
+    indexOfFirstCustomer,
+    indexOfLastCustomer
+  );
+  const totalPages = Math.ceil(menuItems.length / customersPerPage);
+
+  const handlePageSizeChange = (event) => {
+    const newSize = parseInt(event.target.value);
+    setCustomersPerPage(newSize);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="shop-menu-container">
@@ -31,6 +49,25 @@ const ShopMenu = () => {
             </div>
           </div>
         ))}
+        <div className="pagination-controls">
+          <Button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </Button>
+          <span className="page-info">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );
