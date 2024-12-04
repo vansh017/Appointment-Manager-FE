@@ -11,22 +11,42 @@ const Header = () => {
 
   const hideUserIcon = ["/login", "/signup"].includes(location.pathname);
 
-  const menuItems = [
-    {
-      label: "Sign Up",
-      icon: "pi pi-user-plus",
-      command: () => {
-        navigate("/signup");
-      },
-    },
-    {
-      label: "Login",
-      icon: "pi pi-sign-in",
-      command: () => {
-        navigate("/login");
-      },
-    },
-  ];
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const menuItems = userData
+    ? [
+        {
+          label: "Profile",
+          icon: "pi pi-user",
+          command: () => {
+            navigate("/profile");
+          },
+        },
+        {
+          label: "Logout",
+          icon: "pi pi-sign-out",
+          command: () => {
+            localStorage.removeItem("userData");
+            navigate("/login");
+          },
+        },
+      ]
+    : [
+        {
+          label: "Sign Up",
+          icon: "pi pi-user-plus",
+          command: () => {
+            navigate("/signup");
+          },
+        },
+        {
+          label: "Login",
+          icon: "pi pi-sign-in",
+          command: () => {
+            navigate("/login");
+          },
+        },
+      ];
 
   return (
     <header className="main-header">
