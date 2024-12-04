@@ -9,18 +9,20 @@ const ShopDetails = () => {
   const { shopId } = useParams();
 
   return (
-    <div>
-      <Header />
-      <div className="shop-details">
-        <div className="shop-info">
-          <h1>Shop Details</h1>
-          {/* You can add shop information here using the shopId */}
-        </div>
-        <div className="queue-section">
-          <CustomerQueue shopId={shopId} />
-        </div>
-        <div className="menu-section">
-          <ShopMenu shopId={shopId} />
+    <div
+      className="shop-details-container"
+      style={{ backgroundColor: "#091f2c" }}
+    >
+      <div className="shop-details-content">
+        <div className="shop-info-grid">
+          <div className="queue-section">
+            <h2>Customer Queue</h2>
+            <CustomerQueue shopId={shopId} />
+          </div>
+          <div className="menu-section">
+            <h2>Services Menu</h2>
+            <ShopMenu shopId={shopId} />
+          </div>
         </div>
       </div>
     </div>

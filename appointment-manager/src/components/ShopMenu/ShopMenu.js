@@ -12,7 +12,6 @@ const ShopMenu = () => {
 
   return (
     <div className="shop-menu">
-      <h2>Services Menu</h2>
       <div className="menu-items">
         {menuItems.map((item) => (
           <div key={item.id} className="menu-item">

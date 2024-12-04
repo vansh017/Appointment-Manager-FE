@@ -39,34 +39,31 @@ const CustomerQueue = () => {
   };
 
   return (
-    <div className="customer-queue">
-      <h2>Customer Queue</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sr. No.</th>
-            <th>Customer Name</th>
-            <th>Expected Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {queueData.map((customer, index) => (
-            <tr key={customer.id}>
-              <td>{index + 1}</td>
-              <td>{customer.name}</td>
-              <td>{customer.expectedTime}</td>
-              <td>
+    <div className="customer-queue-container">
+      <div className="customer-cards-container">
+        {queueData.map((customer, index) => (
+          <div key={customer.id} className="customer-card">
+            <div className="card-header">
+              <span className="customer-number">#{index + 1}</span>
+              <h3 className="customer-name">{customer.name}</h3>
+            </div>
+            <div className="card-content">
+              <div className="info-row">
+                <span className="info-label">Expected Time:</span>
+                <span className="info-value">{customer.expectedTime}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Status:</span>
                 <span
-                  className={`status-badge ${getStatusClass(customer.status)}`}
+                  className={`info-value ${getStatusClass(customer.status)}`}
                 >
                   {customer.status}
                 </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
