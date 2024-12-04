@@ -11,14 +11,23 @@ const ShopMenu = () => {
   ];
 
   return (
-    <div className="shop-menu">
-      <div className="menu-items">
-        {menuItems.map((item) => (
-          <div key={item.id} className="menu-item">
-            <h3>{item.item}</h3>
-            <div className="item-details">
-              <span className="duration">{item.duration}</span>
-              <span className="price">{item.price}</span>
+    <div className="shop-menu-container">
+      <div className="shop-cards-container">
+        {menuItems.map((item, index) => (
+          <div key={item.id} className="shop-card">
+            <div className="card-header">
+              <span className="shop-number">#{index + 1}</span>
+              <h3 className="shop-name">{item.item}</h3>
+            </div>
+            <div className="card-content">
+              <div className="info-row">
+                <span className="info-label">Duration:</span>
+                <span className="info-value">{item.duration}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Price:</span>
+                <span className="info-value">{item.price}</span>
+              </div>
             </div>
           </div>
         ))}
