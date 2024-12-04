@@ -127,6 +127,17 @@ const CustomerQueue = () => {
           Next
         </Button>
       </div>
+
+      <div className="queue-actions">
+        <Button
+          onClick={() => {
+            /* Add your join queue logic here */
+          }}
+          className="join-queue-button"
+        >
+          Join Queue
+        </Button>
+      </div>
     </div>
   );
 };
