@@ -9,6 +9,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import OtpVerification from "./pages/OtpVerification";
 import Header from "./components/Header/Header";
+import SelectRole from "./pages/SelectRole";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-otp" element={<OtpVerification />} />
+          <Route path="/select-role" element={<SelectRole />} />
         </Routes>
       </div>
     </Router>
