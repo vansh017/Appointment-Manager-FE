@@ -7,7 +7,8 @@ function SelectRole() {
 
   const handleRoleSelect = (role) => {
     localStorage.setItem("userRole", role);
-    navigate("/login");
+
+    navigate("/");
   };
 
   return (

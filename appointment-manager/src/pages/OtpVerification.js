@@ -28,7 +28,7 @@ const OtpVerification = () => {
             );
           }
         }
-        navigate("/");
+        navigate("/select-role");
       }
     } catch (err) {
       console.error(err);
