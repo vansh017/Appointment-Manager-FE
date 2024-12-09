@@ -3,6 +3,7 @@ const API_URLS = {
   LOGIN: "/auth/login",
   OTP: "/auth/otp",
   USER: "/user",
+  CREATE_SHOP: "/shop/create",
 };
 
 export default API_URLS;

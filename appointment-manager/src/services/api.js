@@ -11,6 +11,11 @@ const axiosInstance = axios.create({
   },
 });
 
+if (localStorage.getItem("token")) {
+  axiosInstance.defaults.headers.common["Authorization"] =
+    "Bearer " + localStorage.getItem("token");
+}
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -65,6 +70,24 @@ export const getUserData = async (userId) => {
     return response.data; // Return only the data from the response
   } catch (error) {
     console.error("Error fetching user data by ID:", error.response || error);
+    throw error;
+  }
+};
+
+export const saveShopDetails = async (shopDetails, userId) => {
+  try {
+    const response = await axiosInstance.post(
+      `${API_URLS.CREATE_SHOP}`,
+      shopDetails,
+      {
+        params: {
+          user_id: userId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error while saving shop data:", error.response || error);
     throw error;
   }
 };

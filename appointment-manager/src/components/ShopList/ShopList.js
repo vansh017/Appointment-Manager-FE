@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ShopList.css";
+import Button from "../Button/Button";
 
 const ShopList = () => {
   const navigate = useNavigate();
@@ -150,47 +151,24 @@ const ShopList = () => {
           </div>
         ))}
       </div>
-
       <div className="pagination">
-        <button
-          onClick={() => paginate(currentPage - 1)}
+        <Button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="pagination-button"
         >
-          Previous
-        </button>
-
-        <div className="page-numbers">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`pagination-button ${
-                currentPage === number ? "active" : ""
-              }`}
-            >
-              {number}
-            </button>
-          ))}
-        </div>
-
-        <button
-          onClick={() => paginate(currentPage + 1)}
+          Prev
+        </Button>
+        <span className="page-info">
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
-          className="pagination-button"
         >
           Next
-        </button>
-
-        <select
-          value={itemsPerPage}
-          onChange={handleItemsPerPageChange}
-          className="pagination-button items-select"
-        >
-          <option value="5">5 / page</option>
-          <option value="10">10 / page</option>
-          <option value="15">15 / page</option>
-        </select>
+        </Button>
       </div>
     </div>
   );
