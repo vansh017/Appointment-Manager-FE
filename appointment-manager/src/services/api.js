@@ -91,3 +91,15 @@ export const saveShopDetails = async (shopDetails, userId) => {
     throw error;
   }
 };
+
+export const getShopList = async (userId, userRole) => {
+  try {
+    const response = await axiosInstance.get(API_URLS.SHOP, {
+      params: { user_id: userId, role: userRole }, // Query parameters
+    });
+    return response.data; // Return only the data from the response
+  } catch (error) {
+    console.error("Error fetching user data by ID:", error.response || error);
+    throw error;
+  }
+};
