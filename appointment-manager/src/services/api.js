@@ -103,3 +103,15 @@ export const getShopList = async (userId, userRole) => {
     throw error;
   }
 };
+
+export const getShopMenu = async (userId, shopId) => {
+  try {
+    const response = await axiosInstance.get(API_URLS.SHOP_MENU, {
+      params: { user_id: userId, shop_id: shopId }, // Query parameters
+    });
+    return response.data; // Return only the data from the response
+  } catch (error) {
+    console.error("Error fetching user data by ID:", error.response || error);
+    throw error;
+  }
+};

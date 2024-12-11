@@ -1,16 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ShopMenu.css";
 import Button from "../Button/Button";
+import { getShopMenu } from "../../services/api";
 
-const ShopMenu = () => {
-  const menuItems = [
-    { id: 1, item: "Haircut", duration: "30 min", price: "$25" },
-    { id: 2, item: "Shave", duration: "20 min", price: "$15" },
-    { id: 3, item: "Hair Color", duration: "60 min", price: "$50" },
-    { id: 4, item: "Styling", duration: "45 min", price: "$35" },
-    { id: 5, item: "Facial", duration: "40 min", price: "$30" },
-  ];
-
+const ShopMenu = ({ shopId }) => {
+  const [menuItems, setMenuItems] = useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [customersPerPage, setCustomersPerPage] = React.useState(5);
 
@@ -21,6 +15,21 @@ const ShopMenu = () => {
     indexOfLastCustomer
   );
   const totalPages = Math.ceil(menuItems.length / customersPerPage);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userRole = localStorage.getItem("userRole");
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const result = await getShopMenu(userData.user_id, shopId);
+        setMenuItems(result.data);
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      }
+    };
+
+    fetchMenu();
+  }, [userData.user_id, shopId]);
 
   const handlePageSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
@@ -35,12 +44,12 @@ const ShopMenu = () => {
           <div key={item.id} className="shop-card">
             <div className="card-header">
               <span className="shop-number">#{index + 1}</span>
-              <h3 className="shop-name">{item.item}</h3>
+              <h3 className="shop-name">{item.item_name}</h3>
             </div>
             <div className="card-content">
               <div className="info-row">
                 <span className="info-label">Duration:</span>
-                <span className="info-value">{item.duration}</span>
+                <span className="info-value">{item.expected_time}</span>
               </div>
               <div className="info-row">
                 <span className="info-label">Price:</span>
