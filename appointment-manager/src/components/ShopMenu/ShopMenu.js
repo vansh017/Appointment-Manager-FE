@@ -7,6 +7,12 @@ const ShopMenu = ({ shopId }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [customersPerPage, setCustomersPerPage] = React.useState(5);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [newItem, setNewItem] = useState({
+    item_name: '',
+    expected_time: '',
+    price: ''
+  });
 
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
@@ -35,6 +41,25 @@ const ShopMenu = ({ shopId }) => {
     const newSize = parseInt(event.target.value);
     setCustomersPerPage(newSize);
     setCurrentPage(1);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewItem(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Add API call to save new menu item
+    setShowOverlay(false);
+    setNewItem({
+      item_name: '',
+      expected_time: '',
+      price: ''
+    });
   };
 
   return (
@@ -78,9 +103,53 @@ const ShopMenu = ({ shopId }) => {
           </Button>
         </div>
         <div className="add-item-container">
-          <Button onClick={() => {}}>
+          <Button onClick={() => setShowOverlay(true)}>
             Add Item
           </Button>
+          {showOverlay && (
+            <div className="overlay">
+              <h2>Add New Menu Item</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="item_name">Name:</label>
+                  <input
+                    type="text"
+                    id="item_name"
+                    name="item_name"
+                    value={newItem.item_name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="expected_time">Expected Time:</label>
+                  <input
+                    type="text"
+                    id="expected_time"
+                    name="expected_time"
+                    value={newItem.expected_time}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="price">Price:</label>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={newItem.price}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-buttons">
+                  <Button type="submit">Save</Button>
+                  <Button type="button" onClick={() => setShowOverlay(false)}>Cancel</Button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>
