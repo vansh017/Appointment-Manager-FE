@@ -77,6 +77,11 @@ const ShopMenu = ({ shopId }) => {
             Next
           </Button>
         </div>
+        <div className="add-item-container">
+          <Button onClick={() => {}}>
+            Add Item
+          </Button>
+        </div>
       </div>
     </div>
   );

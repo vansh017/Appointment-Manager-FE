@@ -77,3 +77,22 @@ body {
   color: #e0e0e0;
   margin-left: 8px;
 } 
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 0 1rem;
+}
+
+.page-info {
+  color: #e0e0e0;
+}
+
+.add-item-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  padding-right: 1rem;
+}
