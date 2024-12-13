@@ -115,3 +115,21 @@ export const getShopMenu = async (userId, shopId) => {
     throw error;
   }
 };
+
+export const addShopMenu = async (itemDetails, userId) => {
+  try {
+    const response = await axiosInstance.post(
+      `${API_URLS.CREATE_MENU}`,
+      itemDetails,
+      {
+        params: {
+          user_id: userId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error while saving shop data:", error.response || error);
+    throw error;
+  }
+};

@@ -6,6 +6,7 @@ const API_URLS = {
   CREATE_SHOP: "/shop/create",
   SHOP: "/shop",
   SHOP_MENU: "/shop/menu",
+  CREATE_MENU: "/shop/menu/create",
 };
 
 export default API_URLS;

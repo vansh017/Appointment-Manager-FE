@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ShopMenu.css";
 import Button from "../Button/Button";
-import { getShopMenu } from "../../services/api";
+import { getShopMenu, addShopMenu } from "../../services/api";
 
 const ShopMenu = ({ shopId }) => {
   const [menuItems, setMenuItems] = useState([]);
@@ -9,9 +9,10 @@ const ShopMenu = ({ shopId }) => {
   const [customersPerPage, setCustomersPerPage] = React.useState(5);
   const [showOverlay, setShowOverlay] = useState(false);
   const [newItem, setNewItem] = useState({
-    item_name: '',
-    expected_time: '',
-    price: ''
+    shop_id: shopId,
+    item_name: "",
+    expected_time: "",
+    price: "",
   });
 
   const indexOfLastCustomer = currentPage * customersPerPage;
@@ -45,21 +46,33 @@ const ShopMenu = ({ shopId }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewItem(prev => ({
+    setNewItem((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add API call to save new menu item
-    setShowOverlay(false);
-    setNewItem({
-      item_name: '',
-      expected_time: '',
-      price: ''
-    });
+    try {
+      // Call API to add new menu item
+      await addShopMenu([newItem], userData.user_id);
+
+      // Refresh the menu items list
+      const result = await getShopMenu(userData.user_id, shopId);
+      setMenuItems(result.data);
+
+      // Close overlay and reset form
+      setShowOverlay(false);
+      setNewItem({
+        shop_id: shopId,
+        item_name: "",
+        expected_time: "",
+        price: "",
+      });
+    } catch (error) {
+      console.error("Error adding menu item:", error);
+    }
   };
 
   return (
@@ -103,12 +116,10 @@ const ShopMenu = ({ shopId }) => {
           </Button>
         </div>
         <div className="add-item-container">
-          <Button onClick={() => setShowOverlay(true)}>
-            Add Item
-          </Button>
+          <Button onClick={() => setShowOverlay(true)}>Add Item</Button>
           {showOverlay && (
             <div className="overlay">
-              <h2>Add New Menu Item</h2>
+              <h2>Add New Item</h2>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="item_name">Name:</label>
@@ -124,7 +135,7 @@ const ShopMenu = ({ shopId }) => {
                 <div className="form-group">
                   <label htmlFor="expected_time">Expected Time:</label>
                   <input
-                    type="text"
+                    type="time"
                     id="expected_time"
                     name="expected_time"
                     value={newItem.expected_time}
@@ -145,7 +156,9 @@ const ShopMenu = ({ shopId }) => {
                 </div>
                 <div className="form-buttons">
                   <Button type="submit">Save</Button>
-                  <Button type="button" onClick={() => setShowOverlay(false)}>Cancel</Button>
+                  <Button type="button" onClick={() => setShowOverlay(false)}>
+                    Cancel
+                  </Button>
                 </div>
               </form>
             </div>
