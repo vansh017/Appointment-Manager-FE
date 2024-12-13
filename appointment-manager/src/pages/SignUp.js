@@ -95,7 +95,6 @@ const SignUp = () => {
       };
 
       const response = await signUpUser(userData);
-      console.log("Signup successful:", response);
 
       // Show success message or handle response as needed
       if (response.status === 201 || response.status === 200) {

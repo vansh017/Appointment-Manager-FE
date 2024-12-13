@@ -133,3 +133,33 @@ export const addShopMenu = async (itemDetails, userId) => {
     throw error;
   }
 };
+
+export const getCustomerQueue = async (userId, shopId) => {
+  try {
+    const response = await axiosInstance.get(API_URLS.CUSTOMER, {
+      params: { user_id: userId, shop_id: shopId }, // Query parameters
+    });
+    return response.data; // Return only the data from the response
+  } catch (error) {
+    console.error("Error fetching user data by ID:", error.response || error);
+    throw error;
+  }
+};
+
+export const addCustomerToQueue = async (shopData, userId) => {
+  try {
+    const response = await axiosInstance.post(
+      `${API_URLS.CUSTOMER}`,
+      shopData,
+      {
+        params: {
+          user_id: userId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error while saving shop data:", error.response || error);
+    throw error;
+  }
+};

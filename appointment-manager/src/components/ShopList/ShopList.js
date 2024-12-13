@@ -10,7 +10,6 @@ const ShopList = () => {
 
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userRole = localStorage.getItem("userRole");
-  console.log(userData);
 
   useEffect(() => {
     const fetchShops = async () => {

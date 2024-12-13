@@ -20,7 +20,6 @@ const Login = () => {
 
     try {
       const userData = { email, password };
-      console.log(userData);
 
       const data = await loginUser(userData);
 

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CustomerQueue.css";
 import Button from "../Button/Button";
+import { addCustomerToQueue, getCustomerQueue } from "../../services/api";
+import { CUSTOMER_ROLE } from "../../constants";
 
-const CustomerQueue = () => {
+const CustomerQueue = ({ shopId }) => {
   const queueData = [
     { id: 1, name: "John Doe", expectedTime: "10:30 AM", status: "Waiting" },
     {
@@ -51,16 +53,41 @@ const CustomerQueue = () => {
     },
   ];
 
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [customersPerPage, setCustomersPerPage] = React.useState(5);
+  const [customerQueue, setCustomerQueue] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [customersPerPage, setCustomersPerPage] = useState(5);
+  const [showJoinQueue, setShowJoinQueue] = useState(false);
+  const [isUserInQueue, setIsUserInQueue] = useState(false);
 
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
-  const currentCustomers = queueData.slice(
+  const currentCustomers = customerQueue.slice(
     indexOfFirstCustomer,
     indexOfLastCustomer
   );
-  const totalPages = Math.ceil(queueData.length / customersPerPage);
+  const totalPages = Math.ceil(customerQueue.length / customersPerPage);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userRole = localStorage.getItem("userRole");
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const result = await getCustomerQueue(userData.user_id, shopId);
+        setCustomerQueue(result.data);
+
+        const isInQueue = result.data.some(
+          (customer) => customer.customer_id === userData.user_id
+        );
+        setIsUserInQueue(isInQueue);
+        setShowJoinQueue(userRole === CUSTOMER_ROLE && !isInQueue);
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      }
+    };
+
+    fetchCustomers();
+    setShowJoinQueue(userRole === CUSTOMER_ROLE && !isUserInQueue);
+  }, [userData.user_id, shopId, userRole]);
 
   const handlePageSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
@@ -68,7 +95,28 @@ const CustomerQueue = () => {
     setCurrentPage(1);
   };
 
+  const handleSubmit = async () => {
+    try {
+      // Call API to add new menu item
+      const shopData = {
+        shop_id: shopId,
+      };
+      await addCustomerToQueue(shopData, userData.user_id);
+
+      // Refresh the menu items list
+      const result = await getCustomerQueue(userData.user_id, shopId);
+      setCustomerQueue(result.data);
+
+      // Close overlay and reset form
+    } catch (error) {
+      console.error("Error adding menu item:", error);
+    }
+  };
+
   const getStatusClass = (status) => {
+    if (!status) {
+      return "";
+    }
     switch (status.toLowerCase()) {
       case "waiting":
         return "status-waiting";
@@ -85,15 +133,15 @@ const CustomerQueue = () => {
     <div className="customer-queue-container">
       <div className="customer-cards-container">
         {currentCustomers.map((customer, index) => (
-          <div key={customer.id} className="customer-card">
+          <div className="customer-card">
             <div className="card-header">
               <span className="customer-number">#{index + 1}</span>
-              <h3 className="customer-name">{customer.name}</h3>
+              <h3 className="customer-name">{customer.customer_name}</h3>
             </div>
             <div className="card-content">
               <div className="info-row">
                 <span className="info-label">Expected Time:</span>
-                <span className="info-value">{customer.expectedTime}</span>
+                <span className="info-value">10</span>
               </div>
               <div className="info-row">
                 <span className="info-label">Status:</span>
@@ -128,16 +176,13 @@ const CustomerQueue = () => {
         </Button>
       </div>
 
-      <div className="queue-actions">
-        <Button
-          onClick={() => {
-            /* Add your join queue logic here */
-          }}
-          className="join-queue-button"
-        >
-          Join Queue
-        </Button>
-      </div>
+      {showJoinQueue && (
+        <div className="queue-actions">
+          <Button onClick={() => handleSubmit()} className="join-queue-button">
+            Join Queue
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
