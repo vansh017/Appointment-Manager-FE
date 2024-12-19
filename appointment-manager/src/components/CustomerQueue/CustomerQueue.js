@@ -176,7 +176,7 @@ const CustomerQueue = ({ shopId }) => {
               </div>
               <div className="info-row">
                 <span className="info-label">Status:</span>
-                <div className="status-value-container">
+                <div className={`status-value-container ${customer.status === "completed" ? "status-completed" : ""}`}>
                   {userRole !== CUSTOMER_ROLE ? (
                     <>
                       <span

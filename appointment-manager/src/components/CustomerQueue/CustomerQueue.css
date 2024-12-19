@@ -132,7 +132,7 @@ body {
 }
 
 .status-completed {
-  background-color: #0a2912;
+  /* background-color: #0a2912; */
   color: #388e3c;
 }
 
@@ -158,7 +158,7 @@ body {
   transition: opacity 0.2s;
 }
 
-.customer-card:hover .status-value-container::after {
+.customer-card:hover .status-value-container:not(.status-completed)::after {
   opacity: 0.8;
 }
 
@@ -178,6 +178,23 @@ body {
   bottom: 0;
   opacity: 0;
   pointer-events: none;
+}
+
+.customer-card:hover .status-value-container:not(.status-completed) .status-select {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.customer-card:hover .status-value-container:not(.status-completed) .info-value {
+  opacity: 0;
+}
+
+.status-value-container.status-completed .info-value {
+  opacity: 1 !important;
+}
+
+.status-value-container.status-completed .status-select {
+  display: none;
 }
 
 .status-select option {
@@ -223,19 +240,6 @@ body {
 .status-select:focus-visible {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-}
-
-.customer-card:hover .status-select {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.customer-card:hover .status-value-container .info-value {
-  opacity: 0;
-}
-
-.customer-card:hover .info-row .info-value:not(.status-value-container .info-value) {
-  opacity: 1;
 }
 
 .status-select-container {
