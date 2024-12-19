@@ -5,59 +5,12 @@ import { addCustomerToQueue, getCustomerQueue } from "../../services/api";
 import { CUSTOMER_ROLE } from "../../constants";
 
 const CustomerQueue = ({ shopId }) => {
-  const queueData = [
-    { id: 1, name: "John Doe", expectedTime: "10:30 AM", status: "Waiting" },
-    {
-      id: 2,
-      name: "Jane Smith",
-      expectedTime: "10:45 AM",
-      status: "In Progress",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      expectedTime: "11:00 AM",
-      status: "Waiting",
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      expectedTime: "11:15 AM",
-      status: "Waiting",
-    },
-    { id: 5, name: "Tom Brown", expectedTime: "11:30 AM", status: "Completed" },
-    { id: 6, name: "John Doe", expectedTime: "10:30 AM", status: "Waiting" },
-    {
-      id: 7,
-      name: "Jane Smith",
-      expectedTime: "10:45 AM",
-      status: "In Progress",
-    },
-    {
-      id: 8,
-      name: "Mike Johnson",
-      expectedTime: "11:00 AM",
-      status: "Waiting",
-    },
-    {
-      id: 9,
-      name: "Sarah Williams",
-      expectedTime: "11:15 AM",
-      status: "Waiting",
-    },
-    {
-      id: 10,
-      name: "Tom Brown",
-      expectedTime: "11:30 AM",
-      status: "Completed",
-    },
-  ];
-
   const [customerQueue, setCustomerQueue] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [customersPerPage, setCustomersPerPage] = useState(5);
   const [showJoinQueue, setShowJoinQueue] = useState(false);
   const [isUserInQueue, setIsUserInQueue] = useState(false);
+  const [websocket, setWebSocket] = useState(null);
 
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
@@ -70,23 +23,50 @@ const CustomerQueue = ({ shopId }) => {
   const userRole = localStorage.getItem("userRole");
 
   useEffect(() => {
+    const flagForUserQueue = async (data) => {
+      const isInQueue = data.some(
+        (customer) => customer.customer_id === userData.user_id
+      );
+      setIsUserInQueue(isInQueue);
+      setShowJoinQueue(userRole === CUSTOMER_ROLE && !isInQueue);
+    };
+
+    const ws = new WebSocket(`ws://localhost:3500/ws/queue/${shopId}`);
+
+    ws.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    ws.onmessage = (event) => {
+      console.log("event data", event);
+      const data = JSON.parse(event.data);
+
+      if (data) {
+        setCustomerQueue(data);
+        flagForUserQueue(data);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket Disconnected");
+    };
+
+    setWebSocket(ws);
     const fetchCustomers = async () => {
       try {
         const result = await getCustomerQueue(userData.user_id, shopId);
         setCustomerQueue(result.data);
-
-        const isInQueue = result.data.some(
-          (customer) => customer.customer_id === userData.user_id
-        );
-        setIsUserInQueue(isInQueue);
-        setShowJoinQueue(userRole === CUSTOMER_ROLE && !isInQueue);
+        flagForUserQueue(result.data);
       } catch (error) {
         console.error("Error fetching menu:", error);
       }
     };
 
     fetchCustomers();
-    setShowJoinQueue(userRole === CUSTOMER_ROLE && !isUserInQueue);
   }, [userData.user_id, shopId, userRole]);
 
   const handlePageSizeChange = (event) => {
