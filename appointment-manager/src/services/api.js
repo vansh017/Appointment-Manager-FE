@@ -163,3 +163,21 @@ export const addCustomerToQueue = async (shopData, userId) => {
     throw error;
   }
 };
+
+export const updateCustomerToQueue = async (customerData, userId) => {
+  try {
+    const response = await axiosInstance.post(
+      `${API_URLS.CUSTOMER_UPDATE}`,
+      customerData,
+      {
+        params: {
+          user_id: userId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error while saving shop data:", error.response || error);
+    throw error;
+  }
+};

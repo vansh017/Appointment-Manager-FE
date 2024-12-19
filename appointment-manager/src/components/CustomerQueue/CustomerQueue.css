@@ -30,6 +30,7 @@ body {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid #3d3d3d;
+  position: relative;
 }
 
 .customer-card:hover {
@@ -65,18 +66,59 @@ body {
 
 .info-row {
   display: flex;
+  align-items: center;
   margin-bottom: 8px;
 }
 
 .info-label {
-  color: #888;
-  width: 70px;
-  flex-shrink: 0;
+  font-weight: 500;
+  margin-right: 8px;
+  color: #9ca3af;
+  min-width: 100px;
 }
 
 .info-value {
   color: #e0e0e0;
   margin-left: 8px;
+  font-weight: 500;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.info-value.status-waiting,
+.status-select.status-waiting {
+  color: #ffa726;
+  background-color: rgba(255, 167, 38, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.info-value.status-progress,
+.status-select.status-progress {
+  color: #29b6f6;
+  background-color: rgba(41, 182, 246, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.info-value.status-completed,
+.status-select.status-completed {
+  color: #66bb6a;
+  background-color: rgba(102, 187, 106, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.info-value.status-cancelled,
+.status-select.status-cancelled {
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 500;
 }
 
 .status-waiting {
@@ -92,6 +134,127 @@ body {
 .status-completed {
   background-color: #0a2912;
   color: #388e3c;
+}
+
+.status-value-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-value-container::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.customer-card:hover .status-value-container::after {
+  opacity: 0.8;
+}
+
+.status-select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 4px 30px 4px 12px;
+  cursor: pointer;
+  font-size: inherit;
+  min-width: 120px;
+  transition: all 0.2s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.status-select option {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 12px 16px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-select option[value="waiting"] {
+  color: #ffa726;
+}
+
+.status-select option[value="in_progress"] {
+  color: #29b6f6;
+}
+
+.status-select option[value="completed"] {
+  color: #66bb6a;
+}
+
+.status-select option[value="cancelled"] {
+  color: #ef5350;
+}
+
+.status-select option:hover,
+.status-select option:focus {
+  background-color: #2d2d2d;
+}
+
+.status-select option:checked {
+  background-color: #2d2d2d;
+  font-weight: 600;
+}
+
+.status-select:focus {
+  outline: none;
+}
+
+.status-select:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.customer-card:hover .status-select {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.customer-card:hover .status-value-container .info-value {
+  opacity: 0;
+}
+
+.customer-card:hover .info-row .info-value:not(.status-value-container .info-value) {
+  opacity: 1;
+}
+
+.status-select-container {
+  position: relative;
+  display: inline-block;
+}
+
+.status-select-container::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid currentColor;
+  pointer-events: none;
 }
 
 .pagination-controls {
@@ -148,4 +311,27 @@ body {
 
 .join-queue-button {
   margin-left: 10px;
-} 
+}
+
+.edit-icon-container {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.edit-icon-container svg {
+  width: 18px;
+  height: 18px;
+  fill: #6b7280;
+  cursor: pointer;
+}
+
+.customer-card:hover .edit-icon-container {
+  opacity: 1;
+}
+
+.edit-icon-container:hover svg {
+  fill: #9ca3af;
+}

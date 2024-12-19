@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./CustomerQueue.css";
 import Button from "../Button/Button";
-import { addCustomerToQueue, getCustomerQueue } from "../../services/api";
-import { CUSTOMER_ROLE } from "../../constants";
+import {
+  addCustomerToQueue,
+  getCustomerQueue,
+  updateCustomerToQueue,
+} from "../../services/api";
+import { CUSTOMER_ROLE, STATUS } from "../../constants";
+import { toast } from "react-toastify";
 
 const CustomerQueue = ({ shopId }) => {
   const [customerQueue, setCustomerQueue] = useState([]);
@@ -11,6 +16,8 @@ const CustomerQueue = ({ shopId }) => {
   const [showJoinQueue, setShowJoinQueue] = useState(false);
   const [isUserInQueue, setIsUserInQueue] = useState(false);
   const [websocket, setWebSocket] = useState(null);
+  const [openStatusDropdown, setOpenStatusDropdown] = useState(null);
+  const [showStatusOptions, setShowStatusOptions] = useState(false);
 
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
@@ -100,12 +107,56 @@ const CustomerQueue = ({ shopId }) => {
     switch (status.toLowerCase()) {
       case "waiting":
         return "status-waiting";
-      case "in progress":
+      case "in_progress":
         return "status-progress";
       case "completed":
         return "status-completed";
+      case "cancelled":
+        return "status-cancelled";
       default:
         return "";
+    }
+  };
+
+  const handleEditClick = (e, customerId) => {
+    e.stopPropagation();
+    if (openStatusDropdown === customerId) {
+      setOpenStatusDropdown(null);
+      setShowStatusOptions(false);
+    } else {
+      setOpenStatusDropdown(customerId);
+      setShowStatusOptions(false);
+    }
+  };
+
+  const handleDropdownClick = (e) => {
+    e.stopPropagation();
+    setShowStatusOptions(!showStatusOptions);
+  };
+
+  const handleStatusChange = async (newStatus, customerId) => {
+    try {
+      const customerData = {
+        customer_id: customerId,
+        status: newStatus,
+        shop_id: shopId,
+      };
+
+      await updateCustomerToQueue(customerData, userData.user_id);
+
+      // Update the local state to reflect the change
+      // setCustomerQueue((prevCustomers) =>
+      //   prevCustomers.map((customer) =>
+      //     customer.customer_id === customerId
+      //       ? { ...customer, status: newStatus }
+      //       : customer
+      //   )
+      // );
+
+      toast.success("Status updated successfully");
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Failed to update status");
     }
   };
 
@@ -113,7 +164,7 @@ const CustomerQueue = ({ shopId }) => {
     <div className="customer-queue-container">
       <div className="customer-cards-container">
         {currentCustomers.map((customer, index) => (
-          <div className="customer-card">
+          <div className="customer-card relative" key={customer.customer_id}>
             <div className="card-header">
               <span className="customer-number">#{index + 1}</span>
               <h3 className="customer-name">{customer.customer_name}</h3>
@@ -125,11 +176,46 @@ const CustomerQueue = ({ shopId }) => {
               </div>
               <div className="info-row">
                 <span className="info-label">Status:</span>
-                <span
-                  className={`info-value ${getStatusClass(customer.status)}`}
-                >
-                  {customer.status}
-                </span>
+                <div className="status-value-container">
+                  {userRole !== CUSTOMER_ROLE ? (
+                    <>
+                      <span
+                        className={`info-value ${getStatusClass(
+                          customer.status
+                        )}`}
+                      >
+                        {customer.status.replace(/_/g, " ")}
+                      </span>
+                      <select
+                        className={`status-select ${getStatusClass(
+                          customer.status
+                        )}`}
+                        value={customer.status}
+                        onChange={(e) =>
+                          handleStatusChange(
+                            e.target.value,
+                            customer.customer_id
+                          )
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {Object.entries(STATUS).map(([key, value]) => (
+                          <option key={key} value={value}>
+                            {value.replace(/_/g, " ")}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  ) : (
+                    <span
+                      className={`info-value ${getStatusClass(
+                        customer.status
+                      )}`}
+                    >
+                      {customer.status.replace(/_/g, " ")}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
