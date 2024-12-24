@@ -181,3 +181,17 @@ export const updateCustomerToQueue = async (customerData, userId) => {
     throw error;
   }
 };
+
+export const logoutUser = async (token, userId) => {
+  try {
+    const response = await axiosInstance.post(`${API_URLS.REVOKE}`, token, {
+      params: {
+        user_id: userId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while saving shop data:", error.response || error);
+    throw error;
+  }
+};

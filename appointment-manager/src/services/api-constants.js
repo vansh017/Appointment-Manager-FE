@@ -2,6 +2,7 @@ const API_URLS = {
   SIGN_UP: "/auth/signup",
   LOGIN: "/auth/login",
   OTP: "/auth/otp",
+  REVOKE: "/auth/revoke",
   USER: "/user",
   CREATE_SHOP: "/shop/create",
   SHOP: "/shop",

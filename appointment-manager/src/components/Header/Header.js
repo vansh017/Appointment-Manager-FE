@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "primereact/menu";
 import "./Header.css";
+import { logoutUser } from "../../services/api";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -12,6 +13,7 @@ const Header = () => {
   const hideUserIcon = ["/login", "/signup"].includes(location.pathname);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
+  const token = localStorage.getItem("token");
 
   const menuItems = userData
     ? [
@@ -26,7 +28,8 @@ const Header = () => {
           label: "Logout",
           icon: "pi pi-sign-out",
           command: () => {
-            localStorage.removeItem("userData");
+            localStorage.clear();
+            handleLogout();
             navigate("/login");
           },
         },
@@ -48,6 +51,14 @@ const Header = () => {
         },
       ];
 
+  const handleLogout = async () => {
+    try {
+      // Call API to add new menu item
+      await logoutUser(token, userData.user_id);
+    } catch (error) {
+      console.error("Error adding menu item:", error);
+    }
+  };
   return (
     <header className="main-header">
       <div className="header-content">

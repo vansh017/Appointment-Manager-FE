@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ShopMenu.css";
 import Button from "../Button/Button";
 import { getShopMenu, addShopMenu } from "../../services/api";
+import { OWNER_ROLE } from "../../constants";
 
 const ShopMenu = ({ shopId }) => {
   const [menuItems, setMenuItems] = useState([]);
@@ -24,6 +25,8 @@ const ShopMenu = ({ shopId }) => {
   const totalPages = Math.ceil(menuItems.length / customersPerPage);
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userRole = localStorage.getItem("userRole");
+
+  const showAddItem = userRole === OWNER_ROLE;
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -115,55 +118,57 @@ const ShopMenu = ({ shopId }) => {
             Next
           </Button>
         </div>
-        <div className="add-item-container">
-          <Button onClick={() => setShowOverlay(true)}>Add Item</Button>
-          {showOverlay && (
-            <div className="overlay">
-              <h2>Add New Item</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="item_name">Name:</label>
-                  <input
-                    type="text"
-                    id="item_name"
-                    name="item_name"
-                    value={newItem.item_name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="expected_time">Expected Time:</label>
-                  <input
-                    type="time"
-                    id="expected_time"
-                    name="expected_time"
-                    value={newItem.expected_time}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="price">Price:</label>
-                  <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    value={newItem.price}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-buttons">
-                  <Button type="submit">Save</Button>
-                  <Button type="button" onClick={() => setShowOverlay(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </div>
-          )}
-        </div>
+        {showAddItem && (
+          <div className="add-item-container">
+            <Button onClick={() => setShowOverlay(true)}>Add Item</Button>
+            {showOverlay && (
+              <div className="overlay">
+                <h2>Add New Item</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="item_name">Name:</label>
+                    <input
+                      type="text"
+                      id="item_name"
+                      name="item_name"
+                      value={newItem.item_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="expected_time">Expected Time:</label>
+                    <input
+                      type="time"
+                      id="expected_time"
+                      name="expected_time"
+                      value={newItem.expected_time}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="price">Price:</label>
+                    <input
+                      type="number"
+                      id="price"
+                      name="price"
+                      value={newItem.price}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-buttons">
+                    <Button type="submit">Save</Button>
+                    <Button type="button" onClick={() => setShowOverlay(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
